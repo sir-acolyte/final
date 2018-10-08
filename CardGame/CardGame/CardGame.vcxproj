@@ -115,6 +115,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Aaron.cpp" />
+    <ClCompile Include="Austins.cpp" />
+    <ClCompile Include="Blackjack.cpp" />
+    <ClCompile Include="Card.cpp" />
+    <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Blackjack.h" />
+    <ClInclude Include="Card.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
