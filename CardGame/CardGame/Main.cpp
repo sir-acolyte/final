@@ -25,6 +25,7 @@ int main()
 		//texas();
 	}
 	else {
+		//if user chooses anything else exit program
 		return 0;
 	}
 
