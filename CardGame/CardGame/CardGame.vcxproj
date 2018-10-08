@@ -118,7 +118,6 @@
     <ClCompile Include="Aaron.cpp" />
     <ClCompile Include="Austins.cpp" />
     <ClCompile Include="Blackjack.cpp" />
-    <ClCompile Include="Card.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
