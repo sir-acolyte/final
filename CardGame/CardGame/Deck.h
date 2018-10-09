@@ -16,9 +16,10 @@ private:
 	int deckSize = sizeof(deck) / sizeof(deck[0]);
 
 public:
-	//constructor
+	//constructor - add cards to deck then suffles them
 	Deck() {
 		initDeck();
+		shuffleDeck();
 	}
 
 	//fill deck with cards
@@ -74,7 +75,7 @@ public:
 	Card getCard(int pos) {
 		return deck[pos];
 	}
-
+	//shuffles the deck in random order
 	void shuffleDeck() {
 		std::random_shuffle(&deck[0], &deck[getSize() - 1]);
 	}
