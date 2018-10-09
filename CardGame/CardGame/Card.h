@@ -15,6 +15,7 @@ class Card
 	
 	public:
 		//constructor
+		Card() {};
 		Card(int number, std::string suit) {
 			this->cardNumber = number;
 			this->cardSuit = suit;

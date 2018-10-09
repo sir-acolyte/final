@@ -1,24 +1,16 @@
 #include <time.h>
-#include "Card.h"
+#include <vector> 
+#include "Deck.h"
 
 using namespace std;
 
-void test()
-{
-	Card card1(4, "Hearts");
-
-	cout << "\nNumber: " << card1.getNumber();
-	cout << "\nSuit: " << card1.getSuit();
-
-	card1.setNumber(8);
-
-	cout << "\nNumber: " << card1.getNumber() << "\n";
-	system("pause");
-}
+Deck cardDeck;
 
 void blackjack()
 {
-	cout << "Blackjack";
-
-	test();
+	Card *deck = cardDeck.getDeck();
+	for (int i = 0; i < cardDeck.getSize(); i++) {
+		cout << deck[i].getNumber() << " " << deck[i].getSuit() << "\n";
+	}
+	system("pause");
 }
