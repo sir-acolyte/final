@@ -8,9 +8,19 @@ Deck cardDeck;
 
 void blackjack()
 {
-	Card *deck = cardDeck.getDeck();
-	for (int i = 0; i < cardDeck.getSize(); i++) {
-		cout << deck[i].getNumber() << " " << deck[i].getSuit() << "\n";
+	/*for (int i = 0; i < cardDeck.getSize(); i++) {
+		cout << cardDeck.getCard(i).getFace() << " of " << cardDeck.getCard(i).getSuit() << "\n";
 	}
+	cout << "\n";
+	cardDeck.shuffleDeck();
+	for (int i = 0; i < cardDeck.getSize(); i++) {
+		cout << cardDeck.getCard(i).getFace() << " of " << cardDeck.getCard(i).getSuit() << "\n";
+	}
+	cout << "\n";
+	cardDeck.shuffleDeck();
+	for (int i = 0; i < cardDeck.getSize(); i++) {
+		cout << cardDeck.getCard(i).getFace() << " of " << cardDeck.getCard(i).getSuit() << "\n";
+	}*/
+
 	system("pause");
 }

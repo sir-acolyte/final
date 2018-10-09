@@ -5,6 +5,7 @@
 
 #include <string>
 #include <iostream>
+#include <algorithm>
 #include "Card.h"
 
 class Deck
@@ -58,6 +59,24 @@ public:
 	//return card array
 	Card* getDeck() {
 		return deck;
+	}
+	//update entire deck with another one
+	void updateDeck(Card *cardDeck) {
+		for (int i = 0; i < getSize(); i++) {
+			this->deck[i] = cardDeck[i];
+		}
+	}
+	//update specific card in the deck
+	void updateCard(Card card, int pos) {
+		this->deck[pos] = card;
+	}
+	//return specific card in the deck
+	Card getCard(int pos) {
+		return deck[pos];
+	}
+
+	void shuffleDeck() {
+		std::random_shuffle(&deck[0], &deck[getSize() - 1]);
 	}
 };
 
