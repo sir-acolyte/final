@@ -5,6 +5,7 @@
 using namespace std;
 
 Deck cardDeck;
+Deck playerDeck;
 
 //makes jacks, kings, and queens = 10 for blackjack
 void convertDeck() {
@@ -20,6 +21,17 @@ void convertDeck() {
 
 	//updates the deck with the modified one
 	cardDeck.updateDeck(tempDeck);
+}
+
+void dealCards(int num) {
+	vector<Card> tempDeck = playerDeck.getDeck();
+	for (int i = 0; i < num; i++) {
+		Card tempCard = cardDeck.takeCard(0);
+		tempDeck.insert(tempDeck.begin(), tempCard);
+	}
+	for (int i = 0; i < num; i++) {
+		//playerDeck.insert()
+	}
 }
 
 void blackjack()
