@@ -9,24 +9,24 @@ Deck cardDeck;
 //makes jacks, kings, and queens = 10 for blackjack
 void convertDeck() {
 	//temporary variable to hold deck array
-	Card *deck = cardDeck.getDeck();
+	vector<Card> tempDeck = cardDeck.getDeck();
 
 	//changes cards greater that 10 to equal 10
 	for (int i = 0; i < cardDeck.getSize(); i++) {
-		if (deck[i].getNumber() > 10) {
-			deck[i].setNumber(10);
+		if (tempDeck[i].getNumber() > 10) {
+			tempDeck[i].setNumber(10);
 		}
 	}
 
 	//updates the deck with the modified one
-	cardDeck.updateDeck(deck);
+	cardDeck.updateDeck(tempDeck);
 }
 
 void blackjack()
 {
 	//get deck ready for game start
-	cardDeck.initDeck();
-	cardDeck.shuffleDeck();
+	//cardDeck.initDeck();
+	//cardDeck.shuffleDeck();
 	convertDeck();
 
 	for (int i = 0; i < cardDeck.getSize(); i++) {
