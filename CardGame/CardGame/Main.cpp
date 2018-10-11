@@ -16,6 +16,9 @@ int main()
 	//Choose game
 	cin >> game;
 
+	//clear screen
+	system("cls");
+
 	if (game == 1) {
 		//If user chooses 1 - Blackjack, launch blackjack main function
 		blackjack();

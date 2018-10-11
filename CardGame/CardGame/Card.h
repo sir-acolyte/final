@@ -17,6 +17,7 @@ class Card
 	public:
 		//constructor
 		Card() {};
+		//takes number, automatically assigns faces
 		Card(int number, std::string suit) {
 			this->cardNumber = number;
 			this->cardSuit = suit;
@@ -37,6 +38,7 @@ class Card
 				this->faceCard = std::to_string(number);
 			}
 		}
+		//takes faces only - no numbers, automatically assigns number
 		Card(std::string face, std::string suit) {
 			this->cardSuit = suit;
 			this->faceCard = face;
