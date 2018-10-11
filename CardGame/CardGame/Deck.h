@@ -5,19 +5,25 @@
 
 #include <string>
 #include <iostream>
+#include <algorithm>
 #include "Card.h"
 
 class Deck
 {
 private:
 	//initialize private variables
-	Card deck[52] = {};
-	int deckSize = sizeof(deck) / sizeof(deck[0]);
+	Card deck[52];
 
 public:
-	//constructor
+	//constructor - add cards to deck then suffles them
 	Deck() {
 		initDeck();
+		shuffleDeck();
+	}
+	Deck(int num) {
+		for (int i = 0; i < num; i++) {
+			this->deck[i] = Card();
+		}
 	}
 
 	//fill deck with cards
@@ -52,12 +58,31 @@ public:
 
 	//return size of deck
 	int getSize() {
+		int deckSize = sizeof(deck) / sizeof(deck[0]);
 		return deckSize;
 	}
 
 	//return card array
 	Card* getDeck() {
 		return deck;
+	}
+	//update entire deck with another one
+	void updateDeck(Card *cardDeck) {
+		for (int i = 0; i < getSize(); i++) {
+			this->deck[i] = cardDeck[i];
+		}
+	}
+	//update specific card in the deck
+	void updateCard(int pos, Card card) {
+		this->deck[pos] = card;
+	}
+	//return specific card in the deck
+	Card getCard(int pos) {
+		return deck[pos];
+	}
+	//shuffles the deck in random order
+	void shuffleDeck() {
+		std::random_shuffle(&deck[0], &deck[getSize() - 1]);
 	}
 };
 
