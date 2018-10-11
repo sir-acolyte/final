@@ -6,68 +6,61 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
+#include <vector>
 #include "Card.h"
 
 class Deck
 {
 private:
 	//initialize private variables
-	Card deck[52];
+	std::vector<Card> deck;
 
 public:
 	//constructor - add cards to deck then suffles them
 	Deck() {
 		initDeck();
+		deck.shrink_to_fit();
 		shuffleDeck();
 	}
-	Deck(int num) {
-		for (int i = 0; i < num; i++) {
-			this->deck[i] = Card();
-		}
+	Deck(int null) {
+
 	}
 
 	//fill deck with cards
 	void initDeck()
 	{
-		int num = 0;
-
 		//init Spades
 		for (int i = 1; i <= 13; i++) {
-			deck[num] = Card(i, "Spades");
-			num++;
+			deck.emplace(deck.begin(), Card(i, "Spades"));
 		}
 
 		//init Hearts
 		for (int i = 1; i <= 13; i++) {
-			deck[num] = Card(i, "Hearts");
-			num++;
+			deck.emplace(deck.begin(), Card(i, "Hearts"));
 		}
 
 		//init Diamonds
 		for (int i = 1; i <= 13; i++) {
-			deck[num] = Card(i, "Diamonds");
-			num++;
+			deck.emplace(deck.begin(), Card(i, "Clubs"));
 		}
 
 		//init Clubs
 		for (int i = 1; i <= 13; i++) {
-			deck[num] = Card(i, "Clubs");
-			num++;
+			deck.emplace(deck.begin(), Card(i, "Diamonds"));
 		}
 	}
 
 	//return size of deck
 	int getSize() {
-		int deckSize = sizeof(deck) / sizeof(deck[0]);
-		return deckSize;
+		return deck.size();
 	}
 
 	//return card array
-	Card* getDeck() {
+	std::vector<Card> getDeck() {
 		return deck;
 	}
 	//update entire deck with another one
-	void updateDeck(Card *cardDeck) {
+	void updateDeck(std::vector<Card> cardDeck) {
 		for (int i = 0; i < getSize(); i++) {
 			this->deck[i] = cardDeck[i];
 		}
@@ -80,9 +73,14 @@ public:
 	Card getCard(int pos) {
 		return deck[pos];
 	}
+	Card takeCard(int pos) {
+		Card temp = deck[pos];
+		deck.erase(deck.begin() + pos);
+		return temp;
+	}
 	//shuffles the deck in random order
 	void shuffleDeck() {
-		std::random_shuffle(&deck[0], &deck[getSize() - 1]);
+		std::random_shuffle(deck.begin(), deck.end());
 	}
 };
 
