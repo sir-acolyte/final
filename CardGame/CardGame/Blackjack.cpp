@@ -41,7 +41,9 @@ void blackjack()
 	//cardDeck.shuffleDeck();
 	convertDeck();
 
-	
+	for (int i = 0; i < cardDeck.getSize(); i++) {
+		cout << cardDeck.getCard(i).getFront() << "\n";
+	}
 
 	system("pause");
 }
