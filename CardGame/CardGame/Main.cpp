@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include "Blackjack.h"
 
 using namespace std;
@@ -6,12 +6,13 @@ using namespace std;
 int main()
 {
 	int game = 0;
-
+	
+	cout << " _____\n|A .  |\n| /.\\ |\n|(_._)|\n|  |  |\n|_____|";
 	cout << "\n--------------\n";
 	cout << "  CARD GAMES\n";
 	cout << "--------------\n";
 	//Game list
-	cout << "\n  1 - Blackjack";
+	cout << "\n  1 - Blackjack\n";
 	cout << "\nPick a game to play: ";
 	//Choose game
 	cin >> game;
