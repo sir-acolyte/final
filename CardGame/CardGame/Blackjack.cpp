@@ -30,7 +30,7 @@ void dealCards(int num) {
 		tempDeck.insert(tempDeck.begin(), tempCard);
 	}
 	for (int i = 0; i < num; i++) {
-		//playerDeck.insert()
+		playerDeck.addCard(i, tempDeck[i]);
 	}
 }
 
@@ -41,14 +41,7 @@ void blackjack()
 	//cardDeck.shuffleDeck();
 	convertDeck();
 
-	for (int i = 0; i < cardDeck.getSize(); i++) {
-		cout << cardDeck.getCard(i).getFace() << " of " << cardDeck.getCard(i).getSuit() << "\n";
-	}
 	
-	cout << "\n";
-	for (int i = 0; i < cardDeck.getSize(); i++) {
-		cout << cardDeck.getCard(i).getFace() << " of " << cardDeck.getCard(i).getNumber() << "\n";
-	}
 
 	system("pause");
 }

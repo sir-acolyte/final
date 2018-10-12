@@ -14,8 +14,6 @@ class Deck
 private:
 	//initialize private variables
 	std::vector<Card> deck;
-	std::vector<Card>::iterator b_it = deck.begin();
-	std::vector<Card>::iterator e_it = deck.end();
 
 public:
 	//constructor - add cards to deck then suffles them
@@ -69,7 +67,7 @@ public:
 	}
 	//update specific card in the deck
 	void addCard(int pos, Card card) {
-		deck.insert(b_it + pos, card);
+		deck.insert(deck.begin() + pos, card);
 	}
 	//return specific card in the deck
 	Card getCard(int pos) {
@@ -77,12 +75,12 @@ public:
 	}
 	Card takeCard(int pos) {
 		Card temp = deck[pos];
-		deck.erase(b_it + pos);
+		deck.erase(deck.begin() + pos);
 		return temp;
 	}
 	//shuffles the deck in random order
 	void shuffleDeck() {
-		std::random_shuffle(b_it, e_it);
+		std::random_shuffle(deck.begin(), deck.end());
 	}
 };
 
