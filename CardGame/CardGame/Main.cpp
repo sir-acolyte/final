@@ -7,7 +7,6 @@ int main()
 {
 	int game = 0;
 	
-	cout << " _____\n|A .  |\n| /.\\ |\n|(_._)|\n|  |  |\n|_____|";
 	cout << "\n--------------\n";
 	cout << "  CARD GAMES\n";
 	cout << "--------------\n";
