@@ -66,8 +66,8 @@ public:
 		}
 	}
 	//update specific card in the deck
-	void updateCard(int pos, Card card) {
-		this->deck[pos] = card;
+	void addCard(int pos, Card card) {
+		deck.insert(deck.begin() + pos, card);
 	}
 	//return specific card in the deck
 	Card getCard(int pos) {

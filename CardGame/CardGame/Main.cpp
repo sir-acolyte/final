@@ -11,7 +11,7 @@ int main()
 	cout << "  CARD GAMES\n";
 	cout << "--------------\n";
 	//Game list
-	cout << "\n  1 - Blackjack\n  2 - Texas Hold'em\n";
+	cout << "\n  1 - Blackjack";
 	cout << "\nPick a game to play: ";
 	//Choose game
 	cin >> game;
@@ -22,10 +22,6 @@ int main()
 	if (game == 1) {
 		//If user chooses 1 - Blackjack, launch blackjack main function
 		blackjack();
-	}
-	else if (game == 2) {
-		//if user chooses 2 - Texas Hold'em, launch texas holdem main function
-		//texas();
 	}
 	else {
 		//if user chooses anything else exit program
