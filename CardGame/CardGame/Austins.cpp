@@ -1,5 +1,6 @@
 #include <vector> 
 #include "Deck.h"
+#include "Console.h"
 
 using namespace std;
 
@@ -21,6 +22,15 @@ void convertDeck() {
 
 	//updates the deck with the modified one
 	cardDeck.updateDeck(tempDeck);
+}
+
+string getPlayerHand() {
+	vector<Card> tempDeck = playerDeck.getDeck();
+	string cards = "";
+	for (int i = 0; i < playerDeck.getSize(); i++) {
+		cards += tempDeck[i].getFront() + "\n";
+	}
+	return cards;
 }
 
 void dealPlayerCards(int num) {
@@ -56,10 +66,11 @@ void blackjack()
 		//Deal cards to dealer and player
 		dealPlayerCards(2);
 		dealDealerCards(2);
-		string dealerFirstCard = dealerDeck.getCard(0).getFace();
+		string dealerFirstCard = dealerDeck.getCard(0).getFront();
+
 		//Print cards out to user
-		cout << "Your hand is: " << endl;
-		cout << "The dealer's first card is: " << dealerFirstCard << endl;
+		setConsoleColor("purple"); cout << "-----------\n YOUR HAND\n-----------\n"; setConsoleColor("white"); cout << getPlayerHand() << endl;
+		setConsoleColor("purple"); cout << "---------------------\n DEALER'S FIRST CARD\n---------------------\n"; setConsoleColor("white"); cout << dealerFirstCard << endl;
 		//hitOrStand method??
 		cout << "Type H to hit, or S to stand >> ";
 		cin >> hitOrStand;
