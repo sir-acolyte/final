@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include "Blackjack.h"
+#include "Console.h"
 
 using namespace std;
 
@@ -7,9 +8,13 @@ int main()
 {
 	int game = 0;
 	
+	setConsoleSize(450, 900);
+
+	setConsoleColor("purple");
 	cout << "\n--------------\n";
 	cout << "  CARD GAMES\n";
 	cout << "--------------\n";
+	setConsoleColor("white");
 	//Game list
 	cout << "\n  1 - Blackjack\n";
 	cout << "\nPick a game to play: ";
