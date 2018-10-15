@@ -75,16 +75,6 @@ public:
 	Card getCard(int pos) {
 		return deck[pos];
 	}
-	
-	std::string getAllCards() {
-		std::vector<std::string> yourCards;
-		std::string stringReturn = "";
-		for (int i = 0; i < deck.size(); i++) {
-			yourCards.push_back(getCard(i).getFace());
-			stringReturn += yourCards[i] + "\n";
-		}
-		return stringReturn;
-	}
 
 	Card takeCard(int pos) {
 		Card temp = deck[pos];
