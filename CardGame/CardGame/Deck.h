@@ -7,6 +7,8 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <chrono>
+#include <random>
 #include "Card.h"
 
 class Deck
@@ -74,12 +76,14 @@ public:
 		return deck[pos];
 	}
 	
-	vector<string> getAllCards() {
-		vector <string> yourCards;
+	std::string getAllCards() {
+		std::vector<std::string> yourCards;
+		std::string stringReturn = "";
 		for (int i = 0; i < deck.size(); i++) {
-			yourCards.push_back(getCard(i).getFace);
+			yourCards.push_back(getCard(i).getFace());
+			stringReturn += yourCards[i] + "\n";
 		}
-		return yourCards;
+		return stringReturn;
 	}
 
 	Card takeCard(int pos) {
@@ -89,7 +93,9 @@ public:
 	}
 	//shuffles the deck in random order
 	void shuffleDeck() {
-		std::random_shuffle(deck.begin(), deck.end());
+		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+		std::default_random_engine e(seed);
+		std::shuffle(deck.begin(), deck.end(), e);
 	}
 };
 
