@@ -87,6 +87,19 @@ class Card
 		void setFace(int face) {
 			this->faceCard = std::to_string(face);
 		}
+		std::string getFront() {
+			std::string card = "";
+			std::string type = getSuit();
+
+			if (type == "Spades") {
+				card = " _____\n|" + getFace().substr(0, 1) + " .  |\n| /.\\ |\n|(_._)|\n|  |  |\n|_____|";
+			}
+			else if (type == "Diamonds") {
+				card = " _____\n|" + getFace().substr(0, 1) + " ^  |\n| / \\ |\n| \\ / |\n|  .  |\n|_____|";
+			}
+
+			return card;
+		}
 };
 
 #endif
