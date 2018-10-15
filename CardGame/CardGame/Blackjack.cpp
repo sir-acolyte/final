@@ -42,7 +42,7 @@ void blackjack()
 	convertDeck();
 
 	for (int i = 0; i < cardDeck.getSize(); i++) {
-		cout << cardDeck.getCard(i).getFront() << "\n";
+		cout << i << "\n" << cardDeck.getCard(i).getFront() << "\n";
 	}
 
 	system("pause");
