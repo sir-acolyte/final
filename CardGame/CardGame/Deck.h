@@ -73,6 +73,15 @@ public:
 	Card getCard(int pos) {
 		return deck[pos];
 	}
+	
+	vector<string> getAllCards() {
+		vector <string> yourCards;
+		for (int i = 0; i < deck.size(); i++) {
+			yourCards.push_back(getCard(i).getFace);
+		}
+		return yourCards;
+	}
+
 	Card takeCard(int pos) {
 		Card temp = deck[pos];
 		deck.erase(deck.begin() + pos);
