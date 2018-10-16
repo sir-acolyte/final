@@ -8,7 +8,7 @@ int main()
 {
 	int game = 0;
 	
-	setConsoleSize(450, 900);
+	setConsoleSize(450, 800);
 
 	setConsoleColor("purple");
 	cout << "\n--------------\n";
@@ -32,6 +32,8 @@ int main()
 		//if user chooses anything else exit program
 		return 0;
 	}
+
+	system("pause");
 
 	return 0;
 }
