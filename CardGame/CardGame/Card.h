@@ -92,10 +92,19 @@ class Card
 			std::string type = getSuit();
 
 			if (type == "Spades") {
-				card = " _____\n|" + getFace().substr(0, 1) + " .  |\n| /.\\ |\n|(_._)|\n|  |  |\n|_____|";
+				card = " _____\n|" + getFace().substr(0, 1) + " .  |\n| /.\\ |  " + getFace() + " of " + "\n|(_._)|  " + getSuit() + "\n|  |  |\n|_____|";
 			}
 			else if (type == "Diamonds") {
-				card = " _____\n|" + getFace().substr(0, 1) + " ^  |\n| / \\ |\n| \\ / |\n|  .  |\n|_____|";
+				card = " _____\n|" + getFace().substr(0, 1) + " ^  |\n| / \\ |  " + getFace() + " of " + "\n| \\ / |  " + getSuit() + "\n|  .  |\n|_____|";
+			}
+			else if (type == "Clubs") {
+				card = " _____\n|" + getFace().substr(0, 1) + " _  |\n| ( ) |  " + getFace() + " of " + "\n|(_'_)|  " + getSuit() + "\n|  |  |\n|_____|";
+			}
+			else if (type == "Hearts") {
+				card = " _____\n|" + getFace().substr(0, 1) + "_ _ |\n|( v )|  " + getFace() + " of " + "\n| \\ / |  " + getSuit() + "\n|  .  |\n|_____|";
+			}
+			else {
+				card = " _____\n|" + getFace().substr(0, 1) + "    |\n|     |  " + getFace() + " of " + "\n|     |  " + getSuit() + "\n|     |\n|_____|";
 			}
 
 			return card;
