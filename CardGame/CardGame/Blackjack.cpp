@@ -9,8 +9,8 @@ using namespace std;
 Deck cardDeck;
 Deck playerDeck(0);
 Deck dealerDeck(0);
-//global betting variable so all functions can access it (e.g. youLose())
-int money = 0;
+//global betting variable so all functions can access it (e.g. youLose(bet))
+int money = 250;
 
 //makes jacks, kings, and queens = 10 for blackjack
 void convertDeck() {
@@ -64,7 +64,7 @@ void dealDealerCards(int num) {
 	}
 }
 
-void youWin() {
+void youWin(int bet) {
 	//resize and clear screen
 	system("cls");
 	setConsoleSize(400, 465);
@@ -72,19 +72,23 @@ void youWin() {
 	setConsoleColor("green"); cout << "\n  -----------\n    YOU WIN\n  -----------\n" << endl; setConsoleColor("yellow");
 	cout << "  ___________\n '._==_==_=_.'\n .-\\:      /-.\n| (|:.     |) |\n '-|:.     |-'\n   \\::.    /\n    '::. .'\n      ) (\n    _.' '._\n   `~~~~~~~`" << endl; setConsoleColor("white");
 	cout << "\nYou had a total of "; setConsoleColor("purple"); cout << playerDeck.totalValue(); setConsoleColor("white"); cout << " and the \ndealer had a total of "; setConsoleColor("purple"); cout << dealerDeck.totalValue() << ".\n"; setConsoleColor("white");
+	money += bet * 2;
+	setConsoleColor("white"); cout << "\nYou now have "; setConsoleColor("purple"); cout << money; setConsoleColor("white"); cout << " dollars." << endl;
 }
 
-void youLose() {
+void youLose(int bet) {
 	//resize and clear screen
 	system("cls");
 	setConsoleSize(400, 465);
 
 	setConsoleColor("red"); cout << "\n  ------------\n    YOU LOSE\n  ------------\n" << endl; setConsoleColor("white");
 	cout << "You had a total of "; setConsoleColor("purple"); cout << playerDeck.totalValue(); setConsoleColor("white"); cout << " and the \ndealer had a total of "; setConsoleColor("purple"); cout << dealerDeck.totalValue() << ".\n"; setConsoleColor("white");
+	money -= bet;
+	setConsoleColor("white"); cout << "\nYou now have "; setConsoleColor("purple"); cout << money; setConsoleColor("white"); cout << " dollars." << endl;
 }
 
 void autoResize(boolean displayHand) {
-	int defaultSize = 400;
+	int defaultSize = 410;
 	if (displayHand) {
 		for (int i = 0; i < playerDeck.getSize() + dealerDeck.getSize(); i++) {
 			setConsoleSize(400, i * 110 + defaultSize);
@@ -106,6 +110,7 @@ void blackjack()
 	char hitOrStand;
 	char yesOrNo = 'Y';
 	char displayHand = 'N';
+	int bet = 0;
 
 	//Do while loop to run at least once, then check at the end of the game if the user wants to go again
 	do {
@@ -128,6 +133,11 @@ void blackjack()
 		//Print cards out to user
 		setConsoleColor("purple"); cout << "\n-------------\n  YOUR HAND\n-------------\n"; setConsoleColor("white"); cout << getPlayerHand() << endl;
 		setConsoleColor("purple"); cout << "\n---------------\n  DEALER HAND\n---------------\n"; setConsoleColor("white"); cout << dealerFirstCard << endl;
+		//print total amount of money to user
+		cout << "You have: " << money << " dollars." << endl;
+		//ask user how much they would like to bet
+		cout << "\nHow much money would you like to bet? >> ";
+		cin >> bet;
 		
 		while (hitStandLoop) {
 			setConsoleColor("cyan"); cout << "\nHit (H) or Stand (S) >> "; setConsoleColor("white"); cin >> hitOrStand;
@@ -149,11 +159,11 @@ void blackjack()
 				//if greater than 21, bust, go to you lose method
 				if (playerDeck.totalValue() > 21) {
 					hitStandLoop = false;
-					youLose();
+					youLose(bet);
 				} //if equal to 21, blackjack! go to you win method
 				else if (playerDeck.totalValue() == 21) {
 					hitStandLoop = false;
-					youWin();
+					youWin(bet);
 				} //if none of the above, continue through loop normally
 				else if (playerDeck.totalValue() < 21) {
 					hitStandLoop = true;
@@ -163,11 +173,11 @@ void blackjack()
 				hitStandLoop = false;
 				if (playerDeck.totalValue() > 21) {
 					hitStandLoop = false;
-					youLose();
+					youLose(bet);
 				}
 				else if (playerDeck.totalValue() == 21) {
 					hitStandLoop = false;
-					youWin();
+					youWin(bet);
 				}
 				else if (playerDeck.totalValue() < 21) {
 					hitStandLoop = false;
@@ -191,7 +201,7 @@ void blackjack()
 			//if dealers hand is greater, immediate loss
 			if (dealerDeck.totalValue() > playerDeck.totalValue() && dealerDeck.totalValue() <= 21) {
 				dealerPart = false;
-				youLose();
+				youLose(bet);
 			} //if the dealers hand is below 17, hit once
 			else if (dealerDeck.totalValue() < 17 && dealerDeck.totalValue() <= 21) {
 				dealDealerCards(1);
@@ -201,22 +211,22 @@ void blackjack()
 			} //if dealers hand is greater than or equal to 17, check dealers hand against players
 			else if (dealerDeck.totalValue() >= 17 && dealerDeck.totalValue() <= 21) {
 				if (dealerDeck.totalValue() > playerDeck.totalValue()) {
-					youLose();
+					youLose(bet);
 				}
 				else if (dealerDeck.totalValue() == playerDeck.totalValue()) {
-					youLose();
+					youLose(bet);
 				}
 				else {
-					youWin();
+					youWin(bet);
 				}
 				dealerPart = false;
 			} //if the dealer busts, immediate win for the user
 			else if (dealerDeck.totalValue() > 21) {
 				dealerPart = false;
-				youWin();
+				youWin(bet);
 			}
 			else if (dealerDeck.totalValue() == playerDeck.totalValue()) {
-				youLose();
+				youLose(bet);
 			}
 		}
 
