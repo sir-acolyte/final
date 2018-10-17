@@ -8,8 +8,8 @@ int main()
 {
 	int game = 0;
 	
-	setConsoleSize(400, 700);
-	setConsoleFontSize(20);
+	setConsoleSize(400, 300);
+	setConsoleFontSize(16);
 
 	setConsoleColor("purple");
 	cout << "\n--------------\n";
