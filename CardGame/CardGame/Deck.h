@@ -4,7 +4,6 @@
 #define DECK_H
 
 #include <string>
-#include <iostream>
 #include <algorithm>
 #include <vector>
 #include <chrono>
@@ -31,6 +30,10 @@ public:
 	//fill deck with cards
 	void initDeck()
 	{
+		if (getSize() > 0) {
+			deck.clear();
+		}
+
 		//init Spades
 		for (int i = 1; i <= 13; i++) {
 			deck.emplace(deck.begin(), Card(i, "Spades"));
@@ -86,6 +89,18 @@ public:
 		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 		std::default_random_engine e(seed);
 		std::shuffle(deck.begin(), deck.end(), e);
+	}
+
+	void clearDeck() {
+		deck.clear();
+	}
+
+	int totalValue() {
+		int total = 0;
+		for (int i = 0; i < getSize(); i++) {
+			total += getCard(i).getNumber();
+		}
+		return total;
 	}
 };
 
