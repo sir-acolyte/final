@@ -4,7 +4,6 @@
 #define DECK_H
 
 #include <string>
-#include <iostream>
 #include <algorithm>
 #include <vector>
 #include <chrono>

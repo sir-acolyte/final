@@ -4,7 +4,6 @@
 #define CARD_H
 
 #include <string>
-#include <iostream>
 
 class Card
 {
