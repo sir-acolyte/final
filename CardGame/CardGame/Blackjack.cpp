@@ -111,7 +111,7 @@ void blackjack()
 
 		//clear screen from previous game, and resizes window
 		system("cls");
-		consoleSize = 700;
+		consoleSize = 665;
 		setConsoleSize(400, consoleSize);
 
 		//Deal cards to dealer and player
@@ -134,7 +134,7 @@ void blackjack()
 				//clear and resize the screen to keep things neat
 				system("cls");
 				if (playerDeck.getSize() + dealerDeck.getSize() - 1 > 3) {
-					consoleSize += 100;
+					consoleSize += 115;
 					setConsoleSize(400, consoleSize);
 				}
 				else {
@@ -163,7 +163,7 @@ void blackjack()
 			case 'S':
 				//resize the screen to keep things neat
 				if (playerDeck.getSize() + dealerDeck.getSize() - 1 > 3) {
-					consoleSize += 100;
+					consoleSize += 115;
 					setConsoleSize(400, consoleSize);
 				}
 				else {
@@ -212,7 +212,7 @@ void blackjack()
 
 				//resize the screen to keep things neat
 				if (playerDeck.getSize() + dealerDeck.getSize() - 1 > 3) {
-					consoleSize += 100;
+					consoleSize += 115;
 					setConsoleSize(400, consoleSize);
 				}
 				else {
@@ -247,7 +247,7 @@ void blackjack()
 		case 'Y':
 			system("cls");
 			for (int i = 0; i < playerDeck.getSize() + dealerDeck.getSize(); i++) {
-				setConsoleSize(400, (i * 100) + 500);
+				setConsoleSize(400, (i * 115) + 515);
 			}
 
 			setConsoleColor("purple"); cout << "\n-------------\n  YOUR HAND\n-------------\n"; setConsoleColor("white"); cout << getPlayerHand() << endl;
