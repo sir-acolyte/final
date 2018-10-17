@@ -1,6 +1,6 @@
-﻿#include <iostream>
-#include "Blackjack.h"
+﻿#include "Blackjack.h"
 #include "Console.h"
+#include <iostream>
 
 using namespace std;
 
@@ -8,7 +8,8 @@ int main()
 {
 	int game = 0;
 	
-	setConsoleSize(450, 800);
+	setConsoleSize(400, 700);
+	setConsoleFontSize(18);
 
 	setConsoleColor("purple");
 	cout << "\n--------------\n";
@@ -17,7 +18,7 @@ int main()
 	setConsoleColor("white");
 	//Game list
 	cout << "\n  1 - Blackjack\n";
-	cout << "\nPick a game to play: ";
+	setConsoleColor("cyan");  cout << "\nPick a game to play: "; setConsoleColor("white");
 	//Choose game
 	cin >> game;
 
@@ -33,7 +34,8 @@ int main()
 		return 0;
 	}
 
-	system("pause");
+	cout << "\nExiting...";
+	Sleep(1000);
 
 	return 0;
 }

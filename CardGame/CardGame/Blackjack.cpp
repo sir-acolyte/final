@@ -1,4 +1,5 @@
 #include <vector> 
+#include <iostream>
 #include "Deck.h"
 #include "Console.h"
 
@@ -60,6 +61,25 @@ void dealDealerCards(int num) {
 	}
 }
 
+void youWin() {
+	//resize and clear screen
+	system("cls");
+	setConsoleSize(400, 700);
+
+	setConsoleColor("green"); cout << "\n  -----------\n    YOU WIN\n  -----------\n" << endl; setConsoleColor("yellow");
+	cout << "  ___________\n '._==_==_=_.'\n .-\\:      /-.\n| (|:.     |) |\n '-|:.     |-'\n   \\::.    /\n    '::. .'\n      ) (\n    _.' '._\n   `~~~~~~~`" << endl; setConsoleColor("white");
+	cout << "\nYou had a total of "; setConsoleColor("purple"); cout << playerDeck.totalValue(); setConsoleColor("white"); cout << " and the \ndealer had a total of "; setConsoleColor("purple"); cout << dealerDeck.totalValue() << ".\n"; setConsoleColor("white");
+}
+
+void youLose() {
+	//resize and clear screen
+	system("cls");
+	setConsoleSize(400, 700);
+
+	setConsoleColor("red"); cout << "\n  ------------\n    YOU LOSE\n  ------------\n" << endl; setConsoleColor("white");
+	cout << "You had a total of "; setConsoleColor("purple"); cout << playerDeck.totalValue(); setConsoleColor("white"); cout << " and the \ndealer had a total of "; setConsoleColor("purple"); cout << dealerDeck.totalValue() << ".\n"; setConsoleColor("white");
+}
+
 void blackjack()
 {
 	//Initialize all variables here
@@ -68,6 +88,8 @@ void blackjack()
 	bool dealerPart = false;
 	char hitOrStand;
 	char yesOrNo;
+	char displayHand;
+	int consoleSize = 700;
 
 	//Do while loop to run at least once, then check at the end of the game if the user wants to go again
 	do {
@@ -78,8 +100,10 @@ void blackjack()
 		cardDeck.shuffleDeck();
 		convertDeck();
 
-		//clear screen from previous game, if necessary
+		//clear screen from previous game, and resizes window
 		system("cls");
+		consoleSize = 700;
+		setConsoleSize(400, consoleSize);
 
 		//Deal cards to dealer and player
 		dealPlayerCards(2);
@@ -87,44 +111,65 @@ void blackjack()
 		string dealerFirstCard = dealerDeck.getCard(0).getFront();
 
 		//Print cards out to user
-		setConsoleColor("purple"); cout << "-----------\n YOUR HAND\n-----------\n"; setConsoleColor("white"); cout << getPlayerHand() << endl;
-		setConsoleColor("purple"); cout << "---------------------\n DEALER'S FIRST CARD\n---------------------\n"; setConsoleColor("white"); cout << dealerFirstCard << endl;
+		setConsoleColor("purple"); cout << "\n-------------\n  YOUR HAND\n-------------\n"; setConsoleColor("white"); cout << getPlayerHand() << endl;
+		setConsoleColor("purple"); cout << "\n---------------\n  DEALER HAND\n---------------\n"; setConsoleColor("white"); cout << dealerFirstCard << endl;
+
 		while (hitStandLoop) {
-			cout << "Type H to hit, or S to stand >> ";
-			cin >> hitOrStand;
+			setConsoleColor("cyan"); cout << "\nHit (H) or Stand (S) >> "; setConsoleColor("white"); cin >> hitOrStand;
+			hitOrStand = toupper(hitOrStand);
 			switch (hitOrStand) {
 			case 'H':
 				//deal new card to player
 				dealPlayerCards(1);
-				//clear the screen to keep things neat
+
+				//clear and resize the screen to keep things neat
 				system("cls");
+				if (playerDeck.getSize() + dealerDeck.getSize() - 1 > 3) {
+					consoleSize += 100;
+					setConsoleSize(400, consoleSize);
+				}
+				else {
+					consoleSize = 700;
+					setConsoleSize(400, consoleSize);
+				}
+
 				//print out new hand, and dealers first card again (in case they forgot)
-				setConsoleColor("purple"); cout << "-----------\n YOUR HAND\n-----------\n"; setConsoleColor("white"); cout << getPlayerHand() << endl;
-				setConsoleColor("purple"); cout << "---------------------\n DEALER'S FIRST CARD\n---------------------\n"; setConsoleColor("white"); cout << dealerFirstCard << endl;
+				setConsoleColor("purple"); cout << "\n-------------\n  YOUR HAND\n-------------\n"; setConsoleColor("white"); cout << getPlayerHand() << endl;
+				setConsoleColor("purple"); cout << "\n---------------\n  DEALER HAND\n---------------\n"; setConsoleColor("white"); cout << dealerFirstCard << endl;
+
 				//check players hand for total amount
 				//if greater than 21, bust, go to you lose method
 				if (playerDeck.totalValue() > 21) {
 					hitStandLoop = false;
-					//youLose();
+					youLose();
 				} //if equal to 21, blackjack! go to you win method
 				else if (playerDeck.totalValue() == 21) {
 					hitStandLoop = false;
-					//youWin();
+					youWin();
 				} //if none of the above, continue through loop normally
 				else if (playerDeck.totalValue() < 21) {
 					hitStandLoop = true;
 				}
 				break;
 			case 'S':
-				cout << "Total hand value is: " << playerDeck.totalValue();
+				//resize the screen to keep things neat
+				if (playerDeck.getSize() + dealerDeck.getSize() - 1 > 3) {
+					consoleSize += 100;
+					setConsoleSize(400, consoleSize);
+				}
+				else {
+					consoleSize = 700;
+					setConsoleSize(400, consoleSize);
+				}
+
 				hitStandLoop = false;
 				if (playerDeck.totalValue() > 21) {
 					hitStandLoop = false;
-					//youLose();
+					youLose();
 				}
 				else if (playerDeck.totalValue() == 21) {
 					hitStandLoop = false;
-					//youWin();
+					youWin();
 				}
 				else if (playerDeck.totalValue() < 21) {
 					hitStandLoop = false;
@@ -133,50 +178,84 @@ void blackjack()
 				}
 				break;
 			default:
-				cout << "That is not a valid response, please try again >> ";
-				cin >> hitOrStand;
+				cout << "That is not a valid response, please try again.\n";
 			}
+			//auto set console size based on how many cards are on screen
 		}
 
+		
+
 		while (dealerPart) {
+			//clear and resize screen
 			system("cls");
-			setConsoleColor("purple"); cout << "-------------\n DEALER HAND\n-------------\n"; setConsoleColor("white"); cout << getDealerHand() << endl;
+
+			setConsoleColor("purple"); cout << "\n-------------\n  YOUR HAND\n-------------\n"; setConsoleColor("white"); cout << getPlayerHand() << endl;
+			setConsoleColor("purple"); cout << "\n---------------\n  DEALER HAND\n---------------\n"; setConsoleColor("white"); cout << getDealerHand() << endl;
 			
 			//check dealers hand, now that user is finished
 			//if dealers hand is greater, immediate loss
-			if (dealerDeck.totalValue() > playerDeck.totalValue()) {
+			if (dealerDeck.totalValue() > playerDeck.totalValue() && dealerDeck.totalValue() <= 21) {
 				dealerPart = false;
-				//youLose();
+				youLose();
 			} //if the dealers hand is below 17, hit once
-			else if (dealerDeck.totalValue() < 17) {
+			else if (dealerDeck.totalValue() < 17 && dealerDeck.totalValue() <= 21) {
 				dealDealerCards(1);
-			} //if dealers hand is greater than or equal to 17, check dealers hand against players
-			else if (dealerDeck.totalValue() >= 17) {
-				if (dealerDeck.totalValue() > playerDeck.totalValue()) {
-					//youLose();
+
+				//resize the screen to keep things neat
+				if (playerDeck.getSize() + dealerDeck.getSize() - 1 > 3) {
+					consoleSize += 100;
+					setConsoleSize(400, consoleSize);
 				}
 				else {
-					//youWin();
+					consoleSize = 700;
+					setConsoleSize(400, consoleSize);
+				}
+			} //if dealers hand is greater than or equal to 17, check dealers hand against players
+			else if (dealerDeck.totalValue() >= 17 && dealerDeck.totalValue() <= 21) {
+				if (dealerDeck.totalValue() > playerDeck.totalValue()) {
+					youLose();
+				}
+				else {
+					youWin();
 				}
 				dealerPart = false;
 			} //if the dealer busts, immediate win for the user
 			else if (dealerDeck.totalValue() > 21) {
 				dealerPart = false;
-				//youWin();
+				youWin();
 			}
 			else if (dealerDeck.totalValue() == playerDeck.totalValue()) {
-				//tie();
+				//youTie();
 			}
 		}
 
-		cout << "\nPlay again (y/n)? >> ";
-		cin >> yesOrNo;
-		switch (yesOrNo) {
-		case 'y':
-			goAgain = true;
+		setConsoleColor("cyan"); cout << "\nDisplay hand (Y/N)? >> "; setConsoleColor("white"); cin >> displayHand;
+		displayHand = toupper(displayHand);
+		switch (displayHand) {
+		case 'Y':
+			system("cls");
+			for (int i = 0; i < playerDeck.getSize() + dealerDeck.getSize(); i++) {
+				setConsoleSize(400, (i * 100) + 500);
+			}
+
+			setConsoleColor("purple"); cout << "\n-------------\n  YOUR HAND\n-------------\n"; setConsoleColor("white"); cout << getPlayerHand() << endl;
+			setConsoleColor("purple"); cout << "\n---------------\n  DEALER HAND\n---------------\n"; setConsoleColor("white"); cout << getDealerHand() << endl;
 			break;
 
-		case 'n':
+		case 'N':
+			break;
+		default:
+			cout << "\nInvalid answer, exiting...";
+			goAgain = false;
+		}
+
+		setConsoleColor("cyan"); cout << "\nPlay again (Y/N)? >> "; setConsoleColor("white"); cin >> yesOrNo;
+		yesOrNo = toupper(yesOrNo);
+		switch (yesOrNo) {
+		case 'Y':
+			goAgain = true;
+			break;
+		case 'N':
 			goAgain = false;
 			break;
 		default:
