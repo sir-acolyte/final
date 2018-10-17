@@ -9,7 +9,7 @@ int main()
 	int game = 0;
 	
 	setConsoleSize(400, 700);
-	setConsoleFontSize(18);
+	setConsoleFontSize(20);
 
 	setConsoleColor("purple");
 	cout << "\n--------------\n";

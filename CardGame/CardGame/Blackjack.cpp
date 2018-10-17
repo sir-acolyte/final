@@ -80,6 +80,15 @@ void youLose() {
 	cout << "You had a total of "; setConsoleColor("purple"); cout << playerDeck.totalValue(); setConsoleColor("white"); cout << " and the \ndealer had a total of "; setConsoleColor("purple"); cout << dealerDeck.totalValue() << ".\n"; setConsoleColor("white");
 }
 
+void youTie() {
+	//resize and clear screen
+	system("cls");
+	setConsoleSize(400, 700);
+
+	setConsoleColor("cyan"); cout << "\n  -----------\n    YOU TIE\n  -----------\n" << endl; setConsoleColor("white");
+	cout << "You had a total of "; setConsoleColor("purple"); cout << playerDeck.totalValue(); setConsoleColor("white"); cout << " and the \ndealer had a total of "; setConsoleColor("purple"); cout << dealerDeck.totalValue() << ".\n"; setConsoleColor("white");
+}
+
 void blackjack()
 {
 	//Initialize all variables here
@@ -87,8 +96,8 @@ void blackjack()
 	bool hitStandLoop = true;
 	bool dealerPart = false;
 	char hitOrStand;
-	char yesOrNo;
-	char displayHand;
+	char yesOrNo = 'Y';
+	char displayHand = 'N';
 	int consoleSize = 700;
 
 	//Do while loop to run at least once, then check at the end of the game if the user wants to go again
@@ -215,6 +224,9 @@ void blackjack()
 				if (dealerDeck.totalValue() > playerDeck.totalValue()) {
 					youLose();
 				}
+				else if (dealerDeck.totalValue() == playerDeck.totalValue()) {
+					youTie();
+				}
 				else {
 					youWin();
 				}
@@ -225,7 +237,7 @@ void blackjack()
 				youWin();
 			}
 			else if (dealerDeck.totalValue() == playerDeck.totalValue()) {
-				//youTie();
+				youTie();
 			}
 		}
 
