@@ -32,3 +32,8 @@ void setConsoleFontSize(int size) {
 	wcscpy_s(cfi.FaceName, L"Consolas"); // Choose your font
 	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
 }
+
+void setConsoleTitle(string name) {
+	string title(name);
+	SetConsoleTitle(title.c_str());
+}
