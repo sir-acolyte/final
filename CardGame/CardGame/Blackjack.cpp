@@ -91,12 +91,12 @@ void autoResize(boolean displayHand) {
 	int defaultSize = 410;
 	if (displayHand) {
 		for (int i = 0; i < playerDeck.getSize() + dealerDeck.getSize(); i++) {
-			setConsoleSize(400, i * 110 + defaultSize);
+			setConsoleSize(400, i * 105 + (defaultSize - 100));
 		}
 	}
 	else {
 		for (int i = 0; i < playerDeck.getSize(); i++) {
-			setConsoleSize(400, i * 110 + defaultSize);
+			setConsoleSize(400, i * 105 + defaultSize);
 		}
 	}
 }
@@ -128,16 +128,32 @@ void blackjack()
 		dealPlayerCards(2);
 		dealDealerCards(2);
 		string dealerFirstCard = dealerDeck.getCard(0).getFront();
-		autoResize(false);
 
+		setConsoleSize(400, 540);
 		//Print cards out to user
 		setConsoleColor("purple"); cout << "\n-------------\n  YOUR HAND\n-------------\n"; setConsoleColor("white"); cout << getPlayerHand() << endl;
 		setConsoleColor("purple"); cout << "\n---------------\n  DEALER HAND\n---------------\n"; setConsoleColor("white"); cout << dealerFirstCard << endl;
 		//print total amount of money to user
-		cout << "You have: " << money << " dollars." << endl;
+		cout << "\nYou have "; setConsoleColor("purple"); cout << money; setConsoleColor("white"); cout << " dollars.";
 		//ask user how much they would like to bet
-		cout << "\nHow much money would you like to bet? >> ";
+		setConsoleColor("cyan"); cout << "\nEnter amount to bet >> "; setConsoleColor("white");
 		cin >> bet;
+		//makes sure user only enter and amount they can afford
+		while (bet > money || bet < 0) {
+			setConsoleColor("red"); cout << "\nInvalid amount."; setConsoleColor("white");
+			cout << "\nYou have "; setConsoleColor("purple"); cout << money; setConsoleColor("white"); cout << " dollars.";
+			//ask user how much they would like to bet
+			setConsoleColor("cyan"); cout << "\nEnter amount to bet >> "; setConsoleColor("white");
+			cin >> bet;
+		}
+		setConsoleTitle("Betting " + to_string(bet) + " dollars");
+		
+		//clear and resize screen
+		system("cls");
+		autoResize(false);
+		//Print cards out to user
+		setConsoleColor("purple"); cout << "\n-------------\n  YOUR HAND\n-------------\n"; setConsoleColor("white"); cout << getPlayerHand() << endl;
+		setConsoleColor("purple"); cout << "\n---------------\n  DEALER HAND\n---------------\n"; setConsoleColor("white"); cout << dealerFirstCard << endl;
 		
 		while (hitStandLoop) {
 			setConsoleColor("cyan"); cout << "\nHit (H) or Stand (S) >> "; setConsoleColor("white"); cin >> hitOrStand;
