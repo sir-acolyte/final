@@ -1,5 +1,6 @@
 #include <vector> 
 #include <iostream>
+#include <fstream>
 #include "Deck.h"
 #include "Console.h"
 
@@ -10,7 +11,13 @@ Deck cardDeck;
 Deck playerDeck(0);
 Deck dealerDeck(0);
 //global betting variable so all functions can access it (e.g. youLose(bet))
+//player starts with $250
 int money = 250;
+//variable for Scores.txt
+ofstream scorefile;
+//user's name for high score listings
+string username = "";
+bool hasSetScore = false;
 
 //makes jacks, kings, and queens = 10 for blackjack
 void convertDeck() {
@@ -27,6 +34,8 @@ void convertDeck() {
 	//updates the deck with the modified one
 	cardDeck.updateDeck(tempDeck);
 }
+
+//player/dealer specific functions for better functionality (difficulties taking in a deck parameter)
 
 string getPlayerHand() {
 	vector<Card> tempDeck = playerDeck.getDeck();
@@ -64,6 +73,18 @@ void dealDealerCards(int num) {
 	}
 }
 
+void setScore() {
+	//put user in high score file
+	setConsoleColor("white"); cout << "\nYou won "; setConsoleColor("purple"); cout << money; setConsoleColor("white"); cout << " dollars in total." << endl;
+	cout << "Enter a (one word) name, or initials for your high score: ";
+	cin >> username;
+	scorefile.open("Scores.txt");
+	scorefile << "\n" << username << " - " << money;
+	scorefile.close();
+	hasSetScore = true;
+}
+
+//take in bet for win and lose method to determine how much to add or take away from the total money the user has
 void youWin(int bet) {
 	//resize and clear screen
 	system("cls");
@@ -84,9 +105,9 @@ void youLose(int bet) {
 	setConsoleColor("red"); cout << "\n  ------------\n    YOU LOSE\n  ------------\n" << endl; setConsoleColor("white");
 	cout << "You had a total of "; setConsoleColor("purple"); cout << playerDeck.totalValue(); setConsoleColor("white"); cout << " and the \ndealer had a total of "; setConsoleColor("purple"); cout << dealerDeck.totalValue() << ".\n"; setConsoleColor("white");
 	money -= bet;
-	setConsoleColor("white"); cout << "\nYou now have "; setConsoleColor("purple"); cout << money; setConsoleColor("white"); cout << " dollars." << endl;
+	setScore();
 }
-
+//auto set console size based on how many cards are on screen, for formatting
 void autoResize(boolean displayHand) {
 	int defaultSize = 410;
 	if (displayHand) {
@@ -114,23 +135,29 @@ void blackjack()
 
 	//Do while loop to run at least once, then check at the end of the game if the user wants to go again
 	do {
-		//get deck ready for game start
+		if (money <= 0) {
+			cout << "Not enough money, sorry!" << endl;
+			break;
+		}
+
+		//get decks ready for game start
 		playerDeck.clearDeck();
 		dealerDeck.clearDeck();
 		cardDeck.initDeck();
 		cardDeck.shuffleDeck();
 		convertDeck();
 
-		//clear screen from previous game, and resizes window
+		//clear screen from previous game, if there was one
 		system("cls");
 
 		//Deal cards to dealer and player
 		dealPlayerCards(2);
 		dealDealerCards(2);
+		//turn dealer's first card into a string for easier output
 		string dealerFirstCard = dealerDeck.getCard(0).getFront();
 
 		setConsoleSize(400, 540);
-		//Print cards out to user
+		//Print cards out to user (first time), so they can make a decision based on their hand
 		setConsoleColor("purple"); cout << "\n-------------\n  YOUR HAND\n-------------\n"; setConsoleColor("white"); cout << getPlayerHand() << endl;
 		setConsoleColor("purple"); cout << "\n---------------\n  DEALER HAND\n---------------\n"; setConsoleColor("white"); cout << dealerFirstCard << endl;
 		//print total amount of money to user
@@ -151,7 +178,7 @@ void blackjack()
 		//clear and resize screen
 		system("cls");
 		autoResize(false);
-		//Print cards out to user
+		//Print cards out to user (second)
 		setConsoleColor("purple"); cout << "\n-------------\n  YOUR HAND\n-------------\n"; setConsoleColor("white"); cout << getPlayerHand() << endl;
 		setConsoleColor("purple"); cout << "\n---------------\n  DEALER HAND\n---------------\n"; setConsoleColor("white"); cout << dealerFirstCard << endl;
 		
@@ -186,6 +213,7 @@ void blackjack()
 				}
 				break;
 			case 'S':
+				//same logic as if they would hit, just no dealing cards this time
 				hitStandLoop = false;
 				if (playerDeck.totalValue() > 21) {
 					hitStandLoop = false;
@@ -204,11 +232,9 @@ void blackjack()
 			default:
 				cout << "That is not a valid response, please try again.\n";
 			}
-			//auto set console size based on how many cards are on screen
+			
 		}
-
-		
-
+		//where the dealer checks their cards, "end game"
 		while (dealerPart) {
 			//clear and resize screen
 			system("cls");
@@ -221,17 +247,14 @@ void blackjack()
 			} //if the dealers hand is below 17, hit once
 			else if (dealerDeck.totalValue() < 17 && dealerDeck.totalValue() <= 21) {
 				dealDealerCards(1);
-
-				//resize the screen to keep things neat
-
-			} //if dealers hand is greater than or equal to 17, check dealers hand against players
+			} //if dealers hand is greater than or equal to 17 and below 21, check dealers hand against players
 			else if (dealerDeck.totalValue() >= 17 && dealerDeck.totalValue() <= 21) {
 				if (dealerDeck.totalValue() > playerDeck.totalValue()) {
 					youLose(bet);
-				}
+				} //if the dealer and the player tie, the house wins
 				else if (dealerDeck.totalValue() == playerDeck.totalValue()) {
 					youLose(bet);
-				}
+				} //if all else fails, then the player wins
 				else {
 					youWin(bet);
 				}
@@ -240,13 +263,14 @@ void blackjack()
 			else if (dealerDeck.totalValue() > 21) {
 				dealerPart = false;
 				youWin(bet);
-			}
+			} //check for a tie right from the start, if true then immediate loss
 			else if (dealerDeck.totalValue() == playerDeck.totalValue()) {
 				youLose(bet);
 			}
 		}
-
+		//ask the user if they want to see the cards the dealer had
 		setConsoleColor("cyan"); cout << "\nDisplay hand (Y/N)? >> "; setConsoleColor("white"); cin >> displayHand;
+		//toupper method so it can take in lowercase or uppercase regardless
 		displayHand = toupper(displayHand);
 		switch (displayHand) {
 		case 'Y':
@@ -259,25 +283,28 @@ void blackjack()
 
 		case 'N':
 			break;
-		default:
+		default: //exits option to choose whether to see the hand or not, not exiting the game itself
 			cout << "\nInvalid answer, exiting...";
 			goAgain = false;
 		}
+		//asks the user if they would like to play again
+			setConsoleColor("cyan"); cout << "\nPlay again (Y/N)? >> "; setConsoleColor("white"); cin >> yesOrNo;
+			yesOrNo = toupper(yesOrNo);
+			switch (yesOrNo) {
+			case 'Y':
+				goAgain = true;
+				break;
+			case 'N':
+				if (!hasSetScore)
+					setScore();
+				goAgain = false;
+				break;
+			default: //exits the actual game
+				cout << "\nInvalid answer, exiting...";
+				goAgain = false;
+			}
 
-		setConsoleColor("cyan"); cout << "\nPlay again (Y/N)? >> "; setConsoleColor("white"); cin >> yesOrNo;
-		yesOrNo = toupper(yesOrNo);
-		switch (yesOrNo) {
-		case 'Y':
-			goAgain = true;
-			break;
-		case 'N':
-			goAgain = false;
-			break;
-		default:
-			cout << "\nInvalid answer, exiting...";
-			goAgain = false;
-		}
-
+		//resets the values of most booleans, so it acts like a new game
 		dealerPart = false;
 		hitStandLoop = true;
 	} while (goAgain);

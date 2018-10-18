@@ -7,17 +7,17 @@ using namespace std;
 int main()
 {
 	int game = 0;
-	
+	//set console size and title
 	setConsoleSize(400, 500);
 	setConsoleFontSize(16);
 	setConsoleTitle("Blackjack");
-
+	//text formatting and printing out
 	setConsoleColor("purple");
 	cout << "\n--------------\n";
 	cout << "  CARD GAMES\n";
 	cout << "--------------\n";
 	setConsoleColor("white");
-	//Game list
+	//Game start
 	cout << "\n  1 - Blackjack\n";
 	setConsoleColor("cyan");  cout << "\nPick a game to play: "; setConsoleColor("white");
 	//Choose game

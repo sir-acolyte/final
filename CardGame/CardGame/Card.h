@@ -85,7 +85,7 @@ class Card
 		//set face with number
 		void setFace(int face) {
 			this->faceCard = std::to_string(face);
-		}
+		} //graphics for each card!
 		std::string getFront() {
 			std::string card = "";
 			std::string type = getSuit();
