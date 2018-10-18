@@ -8,8 +8,9 @@ int main()
 {
 	int game = 0;
 	
-	setConsoleSize(400, 700);
-	setConsoleFontSize(20);
+	setConsoleSize(400, 500);
+	setConsoleFontSize(16);
+	setConsoleTitle("Blackjack");
 
 	setConsoleColor("purple");
 	cout << "\n--------------\n";
