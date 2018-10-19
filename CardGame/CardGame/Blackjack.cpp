@@ -17,7 +17,6 @@ int money = 250;
 ofstream scorefile;
 //user's name for high score listings
 string username = "";
-bool hasSetScore = false;
 int highScore = 0;
 
 //makes jacks, kings, and queens = 10 for blackjack
@@ -79,9 +78,7 @@ void setScore() {
 	setConsoleColor("white"); cout << "\nYour current high score is "; setConsoleColor("purple"); cout << highScore; setConsoleColor("white"); cout << " dollars." << endl;
 	scorefile.open("Scores.txt");
 	scorefile << username << " - " << highScore << endl;
-
 	scorefile.close();
-	hasSetScore = true;
 }
 
 //take in bet for win and lose method to determine how much to add or take away from the total money the user has
@@ -93,7 +90,7 @@ void youWin(int bet) {
 	setConsoleColor("green"); cout << "\n  -----------\n    YOU WIN\n  -----------\n" << endl; setConsoleColor("yellow");
 	cout << "  ___________\n '._==_==_=_.'\n .-\\:      /-.\n| (|:.     |) |\n '-|:.     |-'\n   \\::.    /\n    '::. .'\n      ) (\n    _.' '._\n   `~~~~~~~`" << endl; setConsoleColor("white");
 	cout << "\nYou had a total of "; setConsoleColor("purple"); cout << playerDeck.totalValue(); setConsoleColor("white"); cout << " and the \ndealer had a total of "; setConsoleColor("purple"); cout << dealerDeck.totalValue() << ".\n"; setConsoleColor("white");
-	money += bet * 2;
+	money += bet;
 	setConsoleColor("white"); cout << "\nYou now have "; setConsoleColor("purple"); cout << money; setConsoleColor("white"); cout << " dollars." << endl;
 	//set the highest amount of money they won to high score, if current money is higher
 	if (money > highScore) {
@@ -305,8 +302,6 @@ void blackjack()
 				goAgain = true;
 				break;
 			case 'N':
-				if (!hasSetScore)
-					setScore();
 				goAgain = false;
 				break;
 			default: //exits the actual game
