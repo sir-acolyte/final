@@ -91,9 +91,6 @@ void youWin(int bet) {
 	cout << "\nYou had a total of "; setConsoleColor("purple"); cout << playerDeck.totalValue(); setConsoleColor("white"); cout << " and the \ndealer had a total of "; setConsoleColor("purple"); cout << dealerDeck.totalValue() << ".\n"; setConsoleColor("white");
 	money += bet;
 
-	setConsoleColor("white"); cout << "\nYou now have "; setConsoleColor("purple"); cout << money; setConsoleColor("white"); cout << " dollars." << endl;
-	//set the highest amount of money they won to high score, if current money is higher
-
 	if (money > highScore) {
 		highScore = money;
 	}
