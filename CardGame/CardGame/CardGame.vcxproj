@@ -115,8 +115,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Aaron.cpp" />
-    <ClCompile Include="Austins.cpp" />
     <ClCompile Include="Blackjack.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -126,6 +124,9 @@
     <ClInclude Include="Card.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Deck.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Scores.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
