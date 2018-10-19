@@ -18,6 +18,7 @@ ofstream scorefile;
 //user's name for high score listings
 string username = "";
 bool hasSetScore = false;
+int highScore = 0;
 
 //makes jacks, kings, and queens = 10 for blackjack
 void convertDeck() {
@@ -75,11 +76,10 @@ void dealDealerCards(int num) {
 
 void setScore() {
 	//put user in high score file
-	setConsoleColor("white"); cout << "\nYou won "; setConsoleColor("purple"); cout << money; setConsoleColor("white"); cout << " dollars in total." << endl;
-	cout << "Enter a (one word) name, or initials for your high score: ";
-	cin >> username;
+	setConsoleColor("white"); cout << "\nYour current high score is "; setConsoleColor("purple"); cout << highScore; setConsoleColor("white"); cout << " dollars." << endl;
 	scorefile.open("Scores.txt");
-	scorefile << "\n" << username << " - " << money;
+	scorefile << username << " - " << highScore << endl;
+
 	scorefile.close();
 	hasSetScore = true;
 }
@@ -95,6 +95,11 @@ void youWin(int bet) {
 	cout << "\nYou had a total of "; setConsoleColor("purple"); cout << playerDeck.totalValue(); setConsoleColor("white"); cout << " and the \ndealer had a total of "; setConsoleColor("purple"); cout << dealerDeck.totalValue() << ".\n"; setConsoleColor("white");
 	money += bet * 2;
 	setConsoleColor("white"); cout << "\nYou now have "; setConsoleColor("purple"); cout << money; setConsoleColor("white"); cout << " dollars." << endl;
+	//set the highest amount of money they won to high score, if current money is higher
+	if (money > highScore) {
+		highScore = money;
+	}
+	setScore();
 }
 
 void youLose(int bet) {
@@ -104,8 +109,11 @@ void youLose(int bet) {
 
 	setConsoleColor("red"); cout << "\n  ------------\n    YOU LOSE\n  ------------\n" << endl; setConsoleColor("white");
 	cout << "You had a total of "; setConsoleColor("purple"); cout << playerDeck.totalValue(); setConsoleColor("white"); cout << " and the \ndealer had a total of "; setConsoleColor("purple"); cout << dealerDeck.totalValue() << ".\n"; setConsoleColor("white");
-	money -= bet;
+	if (money > highScore) {
+		highScore = money;
+	}
 	setScore();
+	money -= bet;
 }
 //auto set console size based on how many cards are on screen, for formatting
 void autoResize(boolean displayHand) {
@@ -132,6 +140,9 @@ void blackjack()
 	char yesOrNo = 'Y';
 	char displayHand = 'N';
 	int bet = 0;
+
+	cout << "Enter your username please: ";
+	cin >> username;
 
 	//Do while loop to run at least once, then check at the end of the game if the user wants to go again
 	do {
@@ -173,7 +184,6 @@ void blackjack()
 			setConsoleColor("cyan"); cout << "\nEnter amount to bet >> "; setConsoleColor("white");
 			cin >> bet;
 		}
-		setConsoleTitle("Betting " + to_string(bet) + " dollars");
 		
 		//clear and resize screen
 		system("cls");
