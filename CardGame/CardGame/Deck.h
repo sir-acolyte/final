@@ -78,7 +78,7 @@ public:
 	Card getCard(int pos) {
 		return deck[pos];
 	}
-
+	//takes a card from a specified index in the deck
 	Card takeCard(int pos) {
 		Card temp = deck[pos];
 		deck.erase(deck.begin() + pos);
@@ -90,11 +90,11 @@ public:
 		std::default_random_engine e(seed);
 		std::shuffle(deck.begin(), deck.end(), e);
 	}
-
+	//removes all cards from the deck so it's ready for another game
 	void clearDeck() {
 		deck.clear();
 	}
-
+	//returns the total value of all the cards in a deck added up
 	int totalValue() {
 		int total = 0;
 		for (int i = 0; i < getSize(); i++) {
