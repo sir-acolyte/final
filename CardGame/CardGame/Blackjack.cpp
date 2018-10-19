@@ -196,6 +196,9 @@ void blackjack()
 		while (hitStandLoop) {
 			setConsoleColor("cyan"); cout << "\nHit (H) or Stand (S) >> "; setConsoleColor("white"); cin >> hitOrStand;
 			hitOrStand = toupper(hitOrStand);
+
+			int numAce = 0;
+			int acePos = 0;
 			switch (hitOrStand) {
 			case 'H':
 				//deal new card to player
@@ -226,6 +229,27 @@ void blackjack()
 			case 'S':
 				//same logic as if they would hit, just no dealing cards this time
 				hitStandLoop = false;
+
+				for (int i = 0; i < playerDeck.getSize(); i++) {
+					if (playerDeck.getCard(i).getNumber() == 1) {
+						numAce += 1;
+						acePos = i;
+					}
+				}
+				if (numAce = 1) {
+					cout << "\nEnter value for your Ace (1/11) >> ";
+					cin >> numAce;
+					while (numAce != 1 && numAce != 11) {
+						setConsoleColor("red"); cout << "\nInvalid amount."; setConsoleColor("white");
+						cout << "\nEnter value for your Ace (1/11) >> ";
+						cin >> numAce;
+					}
+					vector<Card> tempDeck = playerDeck.getDeck();
+					//replace card in tempdeck ->
+					playerDeck.updateDeck(tempDeck);
+				}
+
+
 				if (playerDeck.totalValue() > 21) {
 					hitStandLoop = false;
 					youLose(bet);
