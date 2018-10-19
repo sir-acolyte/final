@@ -76,7 +76,6 @@ void dealDealerCards(int num) {
 
 void setScore() {
 	//put user in high score file
-	setConsoleColor("white"); cout << "\nYour current high score is "; setConsoleColor("purple"); cout << highScore; setConsoleColor("white"); cout << " dollars." << endl;
 	scorefile.open("Scores.txt");
 	scorefile << username << " - " << highScore << endl;
 
@@ -93,12 +92,13 @@ void youWin(int bet) {
 	setConsoleColor("green"); cout << "\n  -----------\n    YOU WIN\n  -----------\n" << endl; setConsoleColor("yellow");
 	cout << "  ___________\n '._==_==_=_.'\n .-\\:      /-.\n| (|:.     |) |\n '-|:.     |-'\n   \\::.    /\n    '::. .'\n      ) (\n    _.' '._\n   `~~~~~~~`" << endl; setConsoleColor("white");
 	cout << "\nYou had a total of "; setConsoleColor("purple"); cout << playerDeck.totalValue(); setConsoleColor("white"); cout << " and the \ndealer had a total of "; setConsoleColor("purple"); cout << dealerDeck.totalValue() << ".\n"; setConsoleColor("white");
-	money += bet * 2;
-	setConsoleColor("white"); cout << "\nYou now have "; setConsoleColor("purple"); cout << money; setConsoleColor("white"); cout << " dollars." << endl;
-	//set the highest amount of money they won to high score, if current money is higher
+	money += bet;
+
 	if (money > highScore) {
 		highScore = money;
 	}
+	setConsoleColor("white"); cout << "\nYou now have "; setConsoleColor("purple"); cout << money; setConsoleColor("white"); cout << " dollars with a \nhigh score of "; setConsoleColor("purple"); cout << highScore; setConsoleColor("white"); cout << ".\n";
+	//set the highest amount of money they won to high score, if current money is higher
 	setScore();
 }
 
@@ -109,11 +109,12 @@ void youLose(int bet) {
 
 	setConsoleColor("red"); cout << "\n  ------------\n    YOU LOSE\n  ------------\n" << endl; setConsoleColor("white");
 	cout << "You had a total of "; setConsoleColor("purple"); cout << playerDeck.totalValue(); setConsoleColor("white"); cout << " and the \ndealer had a total of "; setConsoleColor("purple"); cout << dealerDeck.totalValue() << ".\n"; setConsoleColor("white");
+	money -= bet;
 	if (money > highScore) {
 		highScore = money;
 	}
+	setConsoleColor("white"); cout << "\nYou now have "; setConsoleColor("purple"); cout << money; setConsoleColor("white"); cout << " dollars with a \nhigh score of "; setConsoleColor("purple"); cout << highScore; setConsoleColor("white"); cout << ".\n";
 	setScore();
-	money -= bet;
 }
 //auto set console size based on how many cards are on screen, for formatting
 void autoResize(boolean displayHand) {
@@ -141,7 +142,7 @@ void blackjack()
 	char displayHand = 'N';
 	int bet = 0;
 
-	cout << "Enter your username please: ";
+	setConsoleColor("cyan"); cout << "\nEnter your username >> "; setConsoleColor("white");
 	cin >> username;
 
 	//Do while loop to run at least once, then check at the end of the game if the user wants to go again
