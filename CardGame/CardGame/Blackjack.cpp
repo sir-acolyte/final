@@ -1,6 +1,7 @@
 #include <vector> 
 #include <iostream>
 #include <fstream>
+#include <streambuf>
 #include "Deck.h"
 #include "Console.h"
 
@@ -15,9 +16,9 @@ Deck dealerDeck(0);
 int money = 250;
 //variable for Scores.txt
 ofstream scorefile;
+ifstream readfile;
 //user's name for high score listings
 string username = "";
-bool hasSetScore = false;
 int highScore = 0;
 
 //makes jacks, kings, and queens = 10 for blackjack
@@ -76,11 +77,92 @@ void dealDealerCards(int num) {
 
 void setScore() {
 	//put user in high score file
-	scorefile.open("Scores.txt");
-	scorefile << username << " - " << highScore << endl;
+	string str;
+	vector<string> names;
+	vector<int> scores;
 
+	//open file
+	readfile.open("files\\scores.txt");
+
+	// Read the next line from File untill it reaches the end
+	while (getline(readfile, str)) {
+		names.push_back(str.substr(0, str.find("-") - 1));
+		scores.push_back(stoi(str.substr(str.find("-") + 2)));
+	}
+	//remove old and duplicate scores
+	for (int i = 0; i < names.size(); i++) {
+		if (names[i] == username) {
+			names.erase(names.begin() + i);
+			scores.erase(scores.begin() + i);
+		}
+	}
+	str = "";
+	//put old scores back in
+	for (int i = 0; i < names.size(); i++) {
+		str += names[i] + " - " + to_string(scores[i]) + "\n";
+	}
+	//add new score in
+	str += username + " - " + to_string(highScore) + "\n";
+
+	//write to file
+	scorefile.open("files\\scores.txt");
+	scorefile << str;
 	scorefile.close();
-	hasSetScore = true;
+	readfile.close();
+}
+
+//returns list of scores as a string
+string getScores() {
+	string str;
+	vector<string> names;
+	vector<int> scores;
+
+	//open file
+	readfile.open("files\\scores.txt");
+
+	// Read the next line from File untill it reaches the end
+	while (getline(readfile, str)) {
+		names.push_back(str.substr(0, str.find("-") - 1));
+		scores.push_back(stoi(str.substr(str.find("-") + 2)));
+	}
+	//remove old and duplicate scores
+	for (int i = 0; i < names.size(); i++) {
+		if (names[i] == username) {
+			names.erase(names.begin() + i);
+			scores.erase(scores.begin() + i);
+		}
+	}
+	str = "\n";
+	//put old scores back in
+	for (int i = 0; i < names.size(); i++) {
+		str += names[i] + " - " + to_string(scores[i]) + "\n";
+	}
+
+	readfile.close();
+	return str;
+}
+
+//pulls high score from text file if matching username is entered
+void getScore() {
+	string str;
+	vector<string> names;
+	vector<int> scores;
+
+	readfile.open("files\\scores.txt");
+
+	// Read the next line from File untill it reaches the end
+	while (getline(readfile, str)) {
+		names.push_back(str.substr(0, str.find("-") - 1));
+		scores.push_back(stoi(str.substr(str.find("-") + 2)));
+	}
+	//set high score is matching username is found
+	for (int i = 0; i < names.size(); i++) {
+		if (names[i] == username) {
+			highScore = scores[i];
+		}
+	}
+	//Close The File
+	readfile.close();
 }
 
 //take in bet for win and lose method to determine how much to add or take away from the total money the user has
@@ -142,13 +224,19 @@ void blackjack()
 	char displayHand = 'N';
 	int bet = 0;
 
+	//print high scores
+	cout << getScores();
 	setConsoleColor("cyan"); cout << "\nEnter your username >> "; setConsoleColor("white");
 	cin >> username;
+	//gets existing score from username
+	getScore();
 
 	//Do while loop to run at least once, then check at the end of the game if the user wants to go again
 	do {
+		//exit game if money reaches 0
 		if (money <= 0) {
 			cout << "Not enough money, sorry!" << endl;
+			Sleep(1000);
 			break;
 		}
 
@@ -167,10 +255,11 @@ void blackjack()
 		dealDealerCards(2);
 		//turn dealer's first card into a string for easier output
 		string dealerFirstCard = dealerDeck.getCard(0).getFront();
+		string playerFirstCard = playerDeck.getCard(0).getFront();
 
 		setConsoleSize(400, 540);
 		//Print cards out to user (first time), so they can make a decision based on their hand
-		setConsoleColor("purple"); cout << "\n-------------\n  YOUR HAND\n-------------\n"; setConsoleColor("white"); cout << getPlayerHand() << endl;
+		setConsoleColor("purple"); cout << "\n-------------\n  YOUR HAND\n-------------\n"; setConsoleColor("white"); cout << playerFirstCard << endl;
 		setConsoleColor("purple"); cout << "\n---------------\n  DEALER HAND\n---------------\n"; setConsoleColor("white"); cout << dealerFirstCard << endl;
 		//print total amount of money to user
 		cout << "\nYou have "; setConsoleColor("purple"); cout << money; setConsoleColor("white"); cout << " dollars.";
@@ -197,9 +286,13 @@ void blackjack()
 			setConsoleColor("cyan"); cout << "\nHit (H) or Stand (S) >> "; setConsoleColor("white"); cin >> hitOrStand;
 			hitOrStand = toupper(hitOrStand);
 
-			int numAce = 0;
-			int acePos = 0;
 			switch (hitOrStand) {
+			default:
+				int numAce;
+				int acePos;
+
+				cout << "That is not a valid response, please try again.\n";
+				break;
 			case 'H':
 				//deal new card to player
 				dealPlayerCards(1);
@@ -229,26 +322,29 @@ void blackjack()
 			case 'S':
 				//same logic as if they would hit, just no dealing cards this time
 				hitStandLoop = false;
+				numAce = 0;
+				acePos = 0;
 
+				//-----Checks if there is a single ace in the deck and asks the user what value it should be-----//
 				for (int i = 0; i < playerDeck.getSize(); i++) {
 					if (playerDeck.getCard(i).getNumber() == 1) {
 						numAce += 1;
 						acePos = i;
 					}
 				}
-				if (numAce = 1) {
-					cout << "\nEnter value for your Ace (1/11) >> ";
+				if (numAce == 1) {
+					setConsoleColor("cyan"); cout << "\nEnter ace value (1/11) >> "; setConsoleColor("white");
 					cin >> numAce;
 					while (numAce != 1 && numAce != 11) {
 						setConsoleColor("red"); cout << "\nInvalid amount."; setConsoleColor("white");
-						cout << "\nEnter value for your Ace (1/11) >> ";
+						setConsoleColor("cyan"); cout << "\nEnter ace value (1/11) >> "; setConsoleColor("white");
 						cin >> numAce;
 					}
 					vector<Card> tempDeck = playerDeck.getDeck();
-					//replace card in tempdeck ->
+					tempDeck[acePos].setNumber(numAce);
 					playerDeck.updateDeck(tempDeck);
 				}
-
+				//----------------------------------------------------------------------------------------------//
 
 				if (playerDeck.totalValue() > 21) {
 					hitStandLoop = false;
@@ -264,8 +360,6 @@ void blackjack()
 					dealerPart = true;
 				}
 				break;
-			default:
-				cout << "That is not a valid response, please try again.\n";
 			}
 			
 		}
@@ -330,8 +424,6 @@ void blackjack()
 				goAgain = true;
 				break;
 			case 'N':
-				if (!hasSetScore)
-					setScore();
 				goAgain = false;
 				break;
 			default: //exits the actual game
