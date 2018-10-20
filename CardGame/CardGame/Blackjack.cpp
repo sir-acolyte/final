@@ -1,7 +1,6 @@
 #include <vector> 
 #include <iostream>
 #include <fstream>
-#include <streambuf>
 #include "Deck.h"
 #include "Console.h"
 
@@ -82,7 +81,7 @@ void setScore() {
 	vector<int> scores;
 
 	//open file
-	readfile.open("files\\scores.txt");
+	readfile.open("scores.txt");
 
 	// Read the next line from File untill it reaches the end
 	while (getline(readfile, str)) {
@@ -105,7 +104,7 @@ void setScore() {
 	str += username + " - " + to_string(highScore) + "\n";
 
 	//write to file
-	scorefile.open("files\\scores.txt");
+	scorefile.open("scores.txt");
 	scorefile << str;
 	scorefile.close();
 	readfile.close();
@@ -118,7 +117,7 @@ string getScores() {
 	vector<int> scores;
 
 	//open file
-	readfile.open("files\\scores.txt");
+	readfile.open("scores.txt");
 
 	// Read the next line from File untill it reaches the end
 	while (getline(readfile, str)) {
@@ -148,7 +147,7 @@ void getScore() {
 	vector<string> names;
 	vector<int> scores;
 
-	readfile.open("files\\scores.txt");
+	readfile.open("scores.txt");
 
 	// Read the next line from File untill it reaches the end
 	while (getline(readfile, str)) {
@@ -263,17 +262,39 @@ void blackjack()
 		setConsoleColor("purple"); cout << "\n---------------\n  DEALER HAND\n---------------\n"; setConsoleColor("white"); cout << dealerFirstCard << endl;
 		//print total amount of money to user
 		cout << "\nYou have "; setConsoleColor("purple"); cout << money; setConsoleColor("white"); cout << " dollars.";
+		
 		//ask user how much they would like to bet
 		setConsoleColor("cyan"); cout << "\nEnter amount to bet >> "; setConsoleColor("white");
 		cin >> bet;
-		//makes sure user only enter and amount they can afford
-		while (bet > money || bet < 0) {
-			setConsoleColor("red"); cout << "\nInvalid amount."; setConsoleColor("white");
-			cout << "\nYou have "; setConsoleColor("purple"); cout << money; setConsoleColor("white"); cout << " dollars.";
-			//ask user how much they would like to bet
-			setConsoleColor("cyan"); cout << "\nEnter amount to bet >> "; setConsoleColor("white");
-			cin >> bet;
-		}
+
+		//-------Error handling: allows the program to continue running if user does not enter an integer------//
+			while (cin.fail()) {
+				cin.clear();
+				cin.ignore(5000, '\n');
+				setConsoleColor("red"); cout << "\nInvalid amount."; setConsoleColor("white");
+				cout << "\nYou have "; setConsoleColor("purple"); cout << money; setConsoleColor("white"); cout << " dollars.";
+				//ask user how much they would like to bet
+				setConsoleColor("cyan"); cout << "\nEnter amount to bet >> "; setConsoleColor("white");
+				cin >> bet;
+			}
+			//makes sure user only enter and amount they can afford
+			while (bet > money || bet < 0) {
+				setConsoleColor("red"); cout << "\nInvalid amount."; setConsoleColor("white");
+				cout << "\nYou have "; setConsoleColor("purple"); cout << money; setConsoleColor("white"); cout << " dollars.";
+				//ask user how much they would like to bet
+				setConsoleColor("cyan"); cout << "\nEnter amount to bet >> "; setConsoleColor("white");
+				cin >> bet;
+				while (cin.fail()) {
+					cin.clear();
+					cin.ignore(5000, '\n');
+					setConsoleColor("red"); cout << "\nInvalid amount."; setConsoleColor("white");
+					cout << "\nYou have "; setConsoleColor("purple"); cout << money; setConsoleColor("white"); cout << " dollars.";
+					//ask user how much they would like to bet
+					setConsoleColor("cyan"); cout << "\nEnter amount to bet >> "; setConsoleColor("white");
+					cin >> bet;
+				}
+			}
+		//-------Error handling: allows the program to continue running if user does not enter an integer------//
 		
 		//clear and resize screen
 		system("cls");
@@ -291,7 +312,7 @@ void blackjack()
 				int numAce;
 				int acePos;
 
-				cout << "That is not a valid response, please try again.\n";
+				cout << "That is not a valid response, please \ntry again.\n";
 				break;
 			case 'H':
 				//deal new card to player
@@ -326,25 +347,25 @@ void blackjack()
 				acePos = 0;
 
 				//-----Checks if there is a single ace in the deck and asks the user what value it should be-----//
-				for (int i = 0; i < playerDeck.getSize(); i++) {
-					if (playerDeck.getCard(i).getNumber() == 1) {
-						numAce += 1;
-						acePos = i;
+					for (int i = 0; i < playerDeck.getSize(); i++) {
+						if (playerDeck.getCard(i).getNumber() == 1) {
+							numAce += 1;
+							acePos = i;
+						}
 					}
-				}
-				if (numAce == 1) {
-					setConsoleColor("cyan"); cout << "\nEnter ace value (1/11) >> "; setConsoleColor("white");
-					cin >> numAce;
-					while (numAce != 1 && numAce != 11) {
-						setConsoleColor("red"); cout << "\nInvalid amount."; setConsoleColor("white");
+					if (numAce == 1) {
 						setConsoleColor("cyan"); cout << "\nEnter ace value (1/11) >> "; setConsoleColor("white");
 						cin >> numAce;
+						while (numAce != 1 && numAce != 11) {
+							setConsoleColor("red"); cout << "\nInvalid amount."; setConsoleColor("white");
+							setConsoleColor("cyan"); cout << "\nEnter ace value (1/11) >> "; setConsoleColor("white");
+							cin >> numAce;
+						}
+						vector<Card> tempDeck = playerDeck.getDeck();
+						tempDeck[acePos].setNumber(numAce);
+						playerDeck.updateDeck(tempDeck);
 					}
-					vector<Card> tempDeck = playerDeck.getDeck();
-					tempDeck[acePos].setNumber(numAce);
-					playerDeck.updateDeck(tempDeck);
-				}
-				//----------------------------------------------------------------------------------------------//
+				//-----Checks if there is a single ace in the deck and asks the user what value it should be-----//
 
 				if (playerDeck.totalValue() > 21) {
 					hitStandLoop = false;
@@ -413,7 +434,6 @@ void blackjack()
 		case 'N':
 			break;
 		default: //exits option to choose whether to see the hand or not, not exiting the game itself
-			cout << "\nInvalid answer, exiting...";
 			goAgain = false;
 		}
 		//asks the user if they would like to play again
